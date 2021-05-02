@@ -7,12 +7,26 @@ call plug#begin()
 Plug 'mxw/vim-jsx'
 Plug 'bentayloruk/vim-react-es6-snippets'
 Plug 'jelera/vim-javascript-syntax'
+Plug 'pangloss/vim-javascript'
 Plug 'elzr/vim-json'
 Plug 'mattn/emmet-vim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'carlitux/deoplete-ternjs'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'valloric/youcompleteme'
+
+"Css plugins
+Plug 'othree/csscomplete.vim'
+
+"Node plugins
+Plug 'moll/vim-node'
+
+"Themes mios
+Plug 'fenetikm/falcon'
+Plug 'morhetz/gruvbox'
+
 
 "Prettier
 Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
@@ -40,6 +54,7 @@ Plug 'chriskempson/tomorrow-theme', { 'rtp': 'vim' }
 Plug 'rhysd/vim-color-spring-night'
 
 " Functionalities
+
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
@@ -73,8 +88,8 @@ Plug 'ThePrimeagen/git-worktree.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 
 "'' Language Support ''"
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+"Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+"Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'jparise/vim-graphql'
 
 "'' Themes ''"
@@ -83,10 +98,27 @@ Plug 'folke/tokyonight.nvim'
 " Plug 'mg979/vim-visual-multi', { 'branch': 'master' }
 Plug 'michal-h21/vim-zettel'
 
+
+"Autocomplete
+"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+
 call plug#end()
 
 "Personal Config
-"autocmd VimEnter * NERDTree
+"JavaScript" 
+let g:used_javascript_libs = 'underscore,backbone'
+
+"css
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
+
+
+" Start autocompletion after 4 chars
+let g:ycm_min_num_of_chars_for_completion = 4
+let g:ycm_min_num_identifier_candidate_chars = 4
+let g:ycm_enable_diagnostic_highlighting = 0
+" Don't show YCM's preview window [ I find it really annoying ]
+set completeopt-=preview
+let g:ycm_add_preview_to_completeopt = 0
 
 "FZF config
 " This is the default extra key bindings
@@ -99,7 +131,7 @@ let g:fzf_action = {
 " CTRL-N and CTRL-P will be automatically bound to next-history and
 " previous-history instead of down and up. If you don't like the change,
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-let g:fzf_history_dir = '~/.local/share/fzf-history'
+"let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 map <C-f> :Files<CR>
 map <leader>b :Buffers<CR>
@@ -108,7 +140,6 @@ nnoremap <leader>t :Tags<CR>
 nnoremap <leader>m :Marks<CR>
 
 
-let g:fzf_tags_command = 'ctags -R'
 " Border color
 let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
 
@@ -160,17 +191,15 @@ command! -bang -nargs=* GGrep
   \   'git grep --line-number '.shellescape(<q-args>), 0,
   \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
 
-""" Python3 VirtualEnv
-let g:python3_host_prog = expand('~/.config/nvim/env/bin/python')
 
 """ Coloring
 syntax on
-color monokai
-colorscheme monokai
+color gruvbox
+colorscheme gruvbox
 highlight Pmenu guibg=white guifg=black gui=bold
 highlight Comment gui=bold
-highlight Normal gui=none
-highlight NonText guibg=none
+highlight Normal gui=bold
+highlight NonText guibg=bold
 
 " Opaque Background (Comment out to use terminal's profile)
 set termguicolors
@@ -184,7 +213,6 @@ filetype plugin indent on
 set tabstop=4 softtabstop=4 shiftwidth=4 expandtab smarttab autoindent
 set incsearch ignorecase smartcase hlsearch
 set ruler laststatus=2 showcmd showmode
-set list listchars=trail:»,tab:»-
 set fillchars+=vert:\ 
 set wrap breakindent
 set encoding=utf-8
@@ -212,7 +240,7 @@ autocmd BufWinEnter,WinEnter term://* startinsert
 autocmd BufLeave term://* stopinsert
 
 " Disable documentation window
-set completeopt-=preview
+"set completeopt-=preview
 
 " vim-pydocstring
 let g:pydocstring_doq_path = '~/.config/nvim/env/bin/doq'
@@ -263,10 +291,6 @@ let g:fzf_colors =
 autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType xml setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd FileType htmldjango inoremap {{ {{  }}<left><left><left>
-autocmd FileType htmldjango inoremap {% {%  %}<left><left><left>
-autocmd FileType htmldjango inoremap {# {#  #}<left><left><left>
 
 " Markdown and Journal
 autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
@@ -316,7 +340,7 @@ endfunction
 let mapleader=","
 nmap <leader>q :NERDTreeToggle<CR>
 nmap \ <leader>q
-nmap <leader>w :TagbarToggle<CR>
+"nmap <leader>w :TagbarToggle<CR>
 nmap <leader>ee :Colors<CR>
 nmap <leader>ea :AirlineTheme 
 nmap <leader>e1 :call ColorDracula()<CR>
@@ -340,6 +364,8 @@ xmap <leader>l :Limelight!!<CR>
 autocmd FileType python nmap <leader>x :0,$!~/.config/nvim/env/bin/python -m yapf<CR>
 "nmap <leader>n :HackerNews best<CR>J
 nmap <silent> <leader><leader> :noh<CR>
-nmap <Tab> :bnext<CR>
-nmap <S-Tab> :bprevious<CR>
+"nmap <Tab> :bnext<CR>
+"nmap <S-Tab> :bprevious<CR>
+
+nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
