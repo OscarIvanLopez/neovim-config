@@ -1,7 +1,12 @@
-"" Optixal's Neovim Init.vim
 
 """ Vim-Plug
 call plug#begin()
+
+"PHP
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
 
 """airline
 let g:airline_theme='badwolf'
@@ -18,7 +23,7 @@ Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'carlitux/deoplete-ternjs'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'valloric/youcompleteme'
+"Plug 'valloric/youcompleteme'
 Plug 'alvan/vim-closetag'
 
 "Css plugins
@@ -109,6 +114,47 @@ Plug 'michal-h21/vim-zettel'
 call plug#end()
 
 "Personal Config
+"
+"PHP
+
+    " enable ncm2 for all buffers
+    autocmd BufEnter * call ncm2#enable_for_buffer()
+
+    " IMPORTANT: :help Ncm2PopupOpen for more information
+    set completeopt=noinsert,menuone,noselect
+        " suppress the annoying 'match x of y', 'The only match' and 'Pattern not
+    " found' messages
+    set shortmess+=c
+
+    " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
+    inoremap <c-c> <ESC>
+
+    " When the <Enter> key is pressed while the popup menu is visible, it only
+    " hides the menu. Use this mapping to close the menu and also start a new
+    " line.
+    inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+
+    " Use <TAB> to select the popup menu:
+    inoremap <expr> <Tab> pumvisible() ? "\<C-m>" : "\<Tab>"
+
+    " wrap existing omnifunc
+    " Note that omnifunc does not run in background and may probably block the
+    " editor. If you don't want to be blocked by omnifunc too often, you could
+    " add 180ms delay before the omni wrapper:
+    "  'on_complete': ['ncm2#on_complete#delay', 180,
+    "               \ 'ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
+    au User Ncm2Plugin call ncm2#register_source({
+            \ 'name' : 'css',
+            \ 'priority': 9,
+            \ 'subscope_enable': 1,
+            \ 'scope': ['css','scss'],
+            \ 'mark': 'css',
+            \ 'word_pattern': '[\w\-]+',
+            \ 'complete_pattern': ':\s*',
+            \ 'on_complete': ['ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
+            \ })
+
+
 " filenames like *.xml, *.html, *.xhtml, ...
 " These are the file extensions where this plugin is enabled.
 "
@@ -181,7 +227,7 @@ let g:fzf_action = {
 " CTRL-N and CTRL-P will be automatically bound to next-history and
 " previous-history instead of down and up. If you don't like the change,
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-"let g:fzf_history_dir = '~/.local/share/fzf-history'
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 map <C-f> :Files<CR>
 map <leader>b :Buffers<CR>
@@ -189,12 +235,36 @@ nnoremap <leader>g :Rg<CR>
 nnoremap <leader>t :Tags<CR>
 nnoremap <leader>m :Marks<CR>
 
+" Search and switch buffers
+nmap <leader>b :Buffers<cr>
+" Find files by name under the current directory
+nmap <leader>f :Files<cr>
+" Find files by name under the home directory
+nmap <leader>h :Files ~/<cr>
+" Search content in the current file
+nmap <leader>l :BLines<cr>
+" Search content in the current file and in files under the current directory
+nmap <leader>g :Ag<cr>
+
+nmap <leader>R :Files `=GetGitRoot()`<cr>
+
+function! GetGitRoot()
+  " Get the dir of the current file
+  let currentDir = expand("%:p:h")
+  " We stop when we find the .git/ dir or hit root
+  while !isdirectory(currentDir . "/.git/") && currentDir !=# "/"
+    " Make the parent the current dir
+    let currentDir = fnamemodify(currentDir, ':h')
+  endwhile
+  return currentDir
+endfunction
+
 
 " Border color
 let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
 
 let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
-let $FZF_DEFAULT_COMMAND="rg --files --hidden"
+"let $FZF_DEFAULT_COMMAND="rg --files --hidden"
 
 
 " Customize fzf colors to match your color scheme
@@ -255,8 +325,8 @@ highlight NonText guibg=bold
 set termguicolors
 
 " Transparent Background (For i3 and compton)
-highlight Normal guibg=NONE ctermbg=NONE
-highlight LineNr guibg=NONE ctermbg=NONE
+"highlight Normal guibg=NONE ctermbg=NONE
+"highlight LineNr guibg=NONE ctermbg=NONE
 
 """ Other Configurations
 filetype plugin indent on
@@ -418,4 +488,3 @@ nmap <silent> <leader><leader> :noh<CR>
 "nmap <S-Tab> :bprevious<CR>
 
 nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
-
