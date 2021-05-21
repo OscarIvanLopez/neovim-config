@@ -2,14 +2,15 @@
 """ Vim-Plug
 call plug#begin()
 
+"Edit files
+Plug 'tpope/vim-eunuch'
+
 "PHP
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
 
-"""airline
-let g:airline_theme='badwolf'
 
 "React Plugins
 Plug 'mxw/vim-jsx'
@@ -35,7 +36,8 @@ Plug 'moll/vim-node'
 "Themes mios
 Plug 'fenetikm/falcon'
 Plug 'morhetz/gruvbox'
-
+Plug 'tomasr/molokai'
+Plug 'sonph/onehalf', { 'rtp': 'vim' }
 
 "Prettier
 Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
@@ -97,8 +99,8 @@ Plug 'ThePrimeagen/git-worktree.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 
 "'' Language Support ''"
-"Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-"Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'jparise/vim-graphql'
 
 "'' Themes ''"
@@ -314,12 +316,15 @@ command! -bang -nargs=* GGrep
 
 """ Coloring
 syntax on
-color gruvbox
-colorscheme gruvbox
-highlight Pmenu guibg=white guifg=black gui=bold
+color molokai
+colorscheme molokai
+highlight Pmenu guibg=white guifg=bold gui=bold
 highlight Comment gui=bold
 highlight Normal gui=bold
 highlight NonText guibg=bold
+
+"""airline
+let g:airline_theme='base16_gruvbox_dark_hard'
 
 " Opaque Background (Comment out to use terminal's profile)
 set termguicolors
@@ -448,7 +453,7 @@ function! ColorForgotten()
     IndentLinesDisable
 endfunction
 
-" Zazen Mode (Black & White)
+" Zazen Mode (black & White)
 function! ColorZazen()
     let g:airline_theme='badcat'
     color zazen
