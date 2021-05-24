@@ -12,7 +12,7 @@ Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
 
 
-"React Plugins
+"Web Plugins
 Plug 'mxw/vim-jsx'
 Plug 'bentayloruk/vim-react-es6-snippets'
 Plug 'jelera/vim-javascript-syntax'
@@ -24,6 +24,8 @@ Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'carlitux/deoplete-ternjs'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'Valloric/MatchTagAlways'
+Plug 'alvan/vim-closetag'
 "Plug 'valloric/youcompleteme'
 Plug 'alvan/vim-closetag'
 
@@ -117,6 +119,66 @@ call plug#end()
 
 "Personal Config
 "
+"React - JSX
+let g:jsx_ext_required = 1
+let g:jsx_pragma_required = 1
+
+"Tags
+let g:mta_use_matchparen_group = 1
+let g:mta_use_matchparen_group = 1
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'jsx' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'jinja' : 1,
+    \}
+
+"auto close tags
+" filenames like *.xml, *.html, *.xhtml, ...
+" These are the file extensions where this plugin is enabled.
+"
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+
+" filenames like *.xml, *.xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+
+" filetypes like xml, html, xhtml, ...
+" These are the file types where this plugin is enabled.
+"
+let g:closetag_filetypes = 'html,xhtml,phtml'
+
+" filetypes like xml, xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+
+" integer value [0|1]
+" This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
+"
+let g:closetag_emptyTags_caseSensitive = 1
+
+" dict
+" Disables auto-close if not in a "valid" region (based on filetype)
+"
+let g:closetag_regions = {
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ 'typescriptreact': 'jsxRegion,tsxRegion',
+    \ 'javascriptreact': 'jsxRegion',
+    \ }
+
+" Shortcut for closing tags, default is '>'
+"
+let g:closetag_shortcut = '>'
+
+" Add > at current position without closing the current tag, default is ''
+"
+let g:closetag_close_shortcut = '<leader>>'
+
+
 "PHP
 
     " enable ncm2 for all buffers
@@ -318,13 +380,13 @@ command! -bang -nargs=* GGrep
 syntax on
 color molokai
 colorscheme molokai
-highlight Pmenu guibg=white guifg=bold gui=bold
+highlight Pmenu guibg=black guifg=bold gui=bold
 highlight Comment gui=bold
 highlight Normal gui=bold
 highlight NonText guibg=bold
 
-"""airline
-let g:airline_theme='base16_gruvbox_dark_hard'
+"airline
+let g:airline_theme='ayu_mirage'
 
 " Opaque Background (Comment out to use terminal's profile)
 set termguicolors
