@@ -22,12 +22,18 @@ Plug 'mattn/emmet-vim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'carlitux/deoplete-ternjs'
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'Valloric/MatchTagAlways'
 Plug 'alvan/vim-closetag'
 "Plug 'valloric/youcompleteme'
 Plug 'alvan/vim-closetag'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'jparise/vim-graphql'
 
 "Css plugins
 Plug 'othree/csscomplete.vim'
@@ -45,7 +51,8 @@ Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 let g:prettier#autoformat = 0
 autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
-
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 " Aesthetics - Main
 Plug 'dracula/vim', { 'commit': '147f389f4275cec4ef43ebc25e2011c57b45cc00' }
 Plug 'sickill/vim-monokai'
@@ -101,8 +108,12 @@ Plug 'ThePrimeagen/git-worktree.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 
 "'' Language Support ''"
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+"Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = [
+  \ 'coc-tsserver',
+  \ 'coc-json'
+  \ ]
 Plug 'jparise/vim-graphql'
 
 "'' Themes ''"
@@ -116,6 +127,8 @@ Plug 'michal-h21/vim-zettel'
 "Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
 
 call plug#end()
+
+
 
 "Personal Config
 "
@@ -554,4 +567,16 @@ nmap <silent> <leader><leader> :noh<CR>
 "nmap <Tab> :bnext<CR>
 "nmap <S-Tab> :bprevious<CR>
 
-nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
+
+"COC
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gr <Plug>(coc-references)
+
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <leader>do <Plug>(coc-codeaction)
+
+nnoremap <silent> <space>d :<C-u>CocList diagnostics<cr>
+nnoremap <silent> K :call CocAction('doHover')<CR>
+
