@@ -46,6 +46,8 @@ Plug 'fenetikm/falcon'
 Plug 'morhetz/gruvbox'
 Plug 'tomasr/molokai'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
+Plug 'bignimbus/pop-punk.vim'
+Plug 'mbbill/vim-seattle'
 
 "Prettier
 Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
@@ -125,6 +127,7 @@ Plug 'michal-h21/vim-zettel'
 
 "Autocomplete
 "Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+
 
 call plug#end()
 
@@ -391,22 +394,32 @@ command! -bang -nargs=* GGrep
 
 """ Coloring
 syntax on
-color molokai
-colorscheme molokai
+color seattle
+colorscheme Tomorrow-Night-Bright
 highlight Pmenu guibg=black guifg=bold gui=bold
 highlight Comment gui=bold
 highlight Normal gui=bold
 highlight NonText guibg=bold
 
+"PUNK THEME
+" pop-punk ANSI colors for vim terminal
+let g:terminal_ansi_colors = pop_punk#AnsiColors()
+
+" for the airline theme - note the underscore instead of the hyphen
+let g:airline_theme = 'pop_punk'
+
+" just for fun
+let g:airline_section_c = '😺 %F'
+
 "airline
-let g:airline_theme='ayu_mirage'
+"let g:airline_theme='ayu_mirage'
 
 " Opaque Background (Comment out to use terminal's profile)
 set termguicolors
 
 " Transparent Background (For i3 and compton)
-"highlight Normal guibg=NONE ctermbg=NONE
-"highlight LineNr guibg=NONE ctermbg=NONE
+highlight Normal guibg=NONE ctermbg=NONE
+highlight LineNr guibg=NONE ctermbg=NONE
 
 """ Other Configurations
 filetype plugin indent on
@@ -534,6 +547,7 @@ function! ColorZazen()
     color zazen
     IndentLinesEnable
 endfunction
+
 
 """ Custom Mappings
 
