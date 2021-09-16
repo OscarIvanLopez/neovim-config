@@ -1,6 +1,21 @@
-
 """ Vim-Plug
 call plug#begin()
+"lightline
+Plug 'itchyny/lightline.vim'
+
+"Robot framework
+Plug 'mfukar/robotframework-vim'
+
+"python stuff
+Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
+Plug 'davidhalter/jedi-vim'
+Plug 'neomake/neomake'
+
+"Telescope
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 "Edit files
 Plug 'tpope/vim-eunuch'
@@ -20,7 +35,6 @@ Plug 'pangloss/vim-javascript'
 Plug 'elzr/vim-json'
 Plug 'mattn/emmet-vim'
 Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'carlitux/deoplete-ternjs'
 Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
@@ -34,6 +48,8 @@ Plug 'alvan/vim-closetag'
 Plug 'alvan/vim-closetag'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
+Plug 'scrooloose/nerdcommenter'
+Plug 'sbdchd/neoformat'
 
 "Css plugins
 Plug 'othree/csscomplete.vim'
@@ -131,7 +147,29 @@ Plug 'michal-h21/vim-zettel'
 
 call plug#end()
 
+"Lightline Config
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
+      \ }
 
+"Relative numbers
+set relativenumber
+
+"Robot framework config
+let g:robot_syntax_for_txt = 1
+
+"python stuff
+let g:deoplete#enable_at_startup = 1
+
+"let g:neomake_python_enabled_makers = ['pylint']
+call neomake#configure#automake('nrwi', 500)
 
 "Personal Config
 "
@@ -341,7 +379,7 @@ endfunction
 
 
 " Border color
-let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
+"let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
 
 let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
 "let $FZF_DEFAULT_COMMAND="rg --files --hidden"
@@ -394,32 +432,29 @@ command! -bang -nargs=* GGrep
 
 """ Coloring
 syntax on
-color seattle
-colorscheme Tomorrow-Night-Bright
-highlight Pmenu guibg=black guifg=bold gui=bold
-highlight Comment gui=bold
-highlight Normal gui=bold
-highlight NonText guibg=bold
+color gruvbox
+let g:gruvbox_contrast_dark = "hard"
+colorscheme seattle
 
 "PUNK THEME
 " pop-punk ANSI colors for vim terminal
-let g:terminal_ansi_colors = pop_punk#AnsiColors()
+"let g:terminal_ansi_colors = pop_punk#AnsiColors()
 
 " for the airline theme - note the underscore instead of the hyphen
-let g:airline_theme = 'pop_punk'
+let g:airline_theme = 'ayu_dark'
 
 " just for fun
 let g:airline_section_c = '😺 %F'
 
 "airline
-"let g:airline_theme='ayu_mirage'
+let g:airline_theme='base16'
 
 " Opaque Background (Comment out to use terminal's profile)
 set termguicolors
 
 " Transparent Background (For i3 and compton)
-highlight Normal guibg=NONE ctermbg=NONE
-highlight LineNr guibg=NONE ctermbg=NONE
+"highlight Normal guibg=NONE ctermbg=NONE
+"highlight LineNr guibg=NONE ctermbg=NONE
 
 """ Other Configurations
 filetype plugin indent on
@@ -440,7 +475,7 @@ let g:NERDTreeDirArrowExpandable = '↠'
 let g:NERDTreeDirArrowCollapsible = '↡'
 
 " Airline
-let g:airline_powerline_fonts = 1
+"let g:airline_powerline_fonts = 1
 let g:airline_section_z = ' %{strftime("%-I:%M %p")}'
 let g:airline_section_warning = ''
 let g:airline#extensions#tabline#enabled = 1
@@ -568,8 +603,8 @@ nmap <leader>a gaip*
 nmap <leader>s <C-w>s<C-w>j:terminal<CR>
 nmap <leader>vs <C-w>v<C-w>l:terminal<CR>
 nmap <leader>d <Plug>(pydocstring)
-nmap <leader>f :Files<CR>
-nmap <leader>g :Goyo<CR>
+"nmap <leader>f :Files<CR>
+nmap <leader>go :Goyo<CR>
 nmap <leader>h :RainbowParentheses!!<CR>
 nmap <leader>j :set filetype=journal<CR>
 nmap <leader>k :ColorToggle<CR>
@@ -594,3 +629,15 @@ nmap <leader>do <Plug>(coc-codeaction)
 nnoremap <silent> <space>d :<C-u>CocList diagnostics<cr>
 nnoremap <silent> K :call CocAction('doHover')<CR>
 
+"Telescope binding
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+" Using Lua functions
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
