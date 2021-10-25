@@ -1,10 +1,16 @@
 """ Vim-Plug
 call plug#begin()
+"color pairs
+Plug 'luochen1990/rainbow'
+
+"Auto pairs
+Plug 'jiangmiao/auto-pairs'
+
 "lightline
 Plug 'itchyny/lightline.vim'
 
 "Robot framework
-Plug 'mfukar/robotframework-vim'
+"Plug 'mfukar/robotframework-vim'
 
 "python stuff
 Plug 'deoplete-plugins/deoplete-jedi'
@@ -29,6 +35,7 @@ Plug 'ncm2/ncm2-path'
 
 "Web Plugins
 Plug 'mxw/vim-jsx'
+Plug 'HerringtonDarkholme/yats.vim'
 Plug 'bentayloruk/vim-react-es6-snippets'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'pangloss/vim-javascript'
@@ -37,7 +44,6 @@ Plug 'mattn/emmet-vim'
 Plug 'roxma/nvim-yarp'
 Plug 'carlitux/deoplete-ternjs'
 Plug 'yuezk/vim-js'
-Plug 'maxmellon/vim-jsx-pretty'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
@@ -45,11 +51,11 @@ Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'Valloric/MatchTagAlways'
 Plug 'alvan/vim-closetag'
 "Plug 'valloric/youcompleteme'
-Plug 'alvan/vim-closetag'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
 Plug 'scrooloose/nerdcommenter'
 Plug 'sbdchd/neoformat'
+Plug 'cristianoliveira/vim-react-html-snippets'
 
 "Css plugins
 Plug 'othree/csscomplete.vim'
@@ -66,11 +72,11 @@ Plug 'bignimbus/pop-punk.vim'
 Plug 'mbbill/vim-seattle'
 
 "Prettier
-Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
-autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
-autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+"Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+"let g:prettier#autoformat = 0
+"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+"autocmd BufEnter *.{js,jsx,ts} :syntax sync fromstart
+"autocmd BufLeave *.{js,jsx,ts} :syntax sync clear
 " Aesthetics - Main
 Plug 'dracula/vim', { 'commit': '147f389f4275cec4ef43ebc25e2011c57b45cc00' }
 Plug 'sickill/vim-monokai'
@@ -146,10 +152,15 @@ Plug 'michal-h21/vim-zettel'
 
 
 call plug#end()
+"Prettier config
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+"Color pairs config
+let g:rainbow_active = 1
 
 "Lightline Config
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'ayu_dark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -163,7 +174,7 @@ let g:lightline = {
 set relativenumber
 
 "Robot framework config
-let g:robot_syntax_for_txt = 1
+"let g:robot_syntax_for_txt = 1
 
 "python stuff
 let g:deoplete#enable_at_startup = 1
@@ -197,7 +208,7 @@ let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
 " filenames like *.xml, *.xhtml, ...
 " This will make the list of non-closing tags self-closing in the specified files.
 "
-let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.tsx'
 
 " filetypes like xml, html, xhtml, ...
 " These are the file types where this plugin is enabled.
@@ -207,7 +218,7 @@ let g:closetag_filetypes = 'html,xhtml,phtml'
 " filetypes like xml, xhtml, ...
 " This will make the list of non-closing tags self-closing in the specified files.
 "
-let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx,tsx'
 
 " integer value [0|1]
 " This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
@@ -254,6 +265,9 @@ let g:closetag_close_shortcut = '<leader>>'
 
     " Use <TAB> to select the popup menu:
     inoremap <expr> <Tab> pumvisible() ? "\<C-m>" : "\<Tab>"
+
+    "autocompletion
+    autocmd FileType xml,html inoremap </ </<C-x><C-o>
 
     " wrap existing omnifunc
     " Note that omnifunc does not run in background and may probably block the
@@ -329,7 +343,7 @@ autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
 " Start autocompletion after 4 chars
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_min_num_identifier_candidate_chars = 1
-let g:ycm_enable_diagnostic_highlighting = 0
+let g:ycm_enable_diagnostic_highlighting = 1
 " Don't show YCM's preview window [ I find it really annoying ]
 set completeopt-=preview
 let g:ycm_add_preview_to_completeopt = 0
@@ -432,22 +446,26 @@ command! -bang -nargs=* GGrep
 
 """ Coloring
 syntax on
-color gruvbox
-let g:gruvbox_contrast_dark = "hard"
-colorscheme seattle
+color molokai
+colorscheme molokai
+
+"GRUVBOX THEME CONFIG
+"let g:gruvbox_contrast_light = "soft"
+"let g:gruvbox_bold = 1
+"let g:gruvbox_termcolors = 200
+"let g:gruvbox_hls_cursor = 'yellow'
+"set bg=light
 
 "PUNK THEME
 " pop-punk ANSI colors for vim terminal
 "let g:terminal_ansi_colors = pop_punk#AnsiColors()
 
 " for the airline theme - note the underscore instead of the hyphen
-let g:airline_theme = 'ayu_dark'
+let g:airline_theme = 'alduin'
 
 " just for fun
-let g:airline_section_c = '😺 %F'
+let g:airline_section_c = '😺%F'
 
-"airline
-let g:airline_theme='base16'
 
 " Opaque Background (Comment out to use terminal's profile)
 set termguicolors
@@ -473,6 +491,7 @@ set title
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = '↠'
 let g:NERDTreeDirArrowCollapsible = '↡'
+autocmd VimEnter * NERDTree
 
 " Airline
 "let g:airline_powerline_fonts = 1
@@ -493,13 +512,17 @@ autocmd BufLeave term://* stopinsert
 " vim-pydocstring
 let g:pydocstring_doq_path = '~/.config/nvim/env/bin/doq'
 
-" Supertab
+" rupertab
 let g:SuperTabDefaultCompletionType = "<C-n>"
 
 " Ultisnips
 let g:UltiSnipsExpandTrigger="<C-Space>"
-let g:UltiSnipsJumpForwardTrigger="<Tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<C-x>"
+
+"let g:UltiSnipsExpandTrigger="<tab>"
+"list all snippets for current filetype
+"let g:UltiSnipsListSnippets="<c-l>"
 
 " EasyAlign
 xmap ga <Plug>(EasyAlign)
@@ -600,7 +623,7 @@ nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 nmap <leader>t :call TrimWhitespace()<CR>
 xmap <leader>a gaip*
 nmap <leader>a gaip*
-nmap <leader>s <C-w>s<C-w>j:terminal<CR>
+nmap <leader>vt <C-w>s<C-w>j:terminal<CR>
 nmap <leader>vs <C-w>v<C-w>l:terminal<CR>
 nmap <leader>d <Plug>(pydocstring)
 "nmap <leader>f :Files<CR>
@@ -641,3 +664,4 @@ nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
