@@ -32,10 +32,8 @@ Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
 
-
 "Web Plugins
 Plug 'mxw/vim-jsx'
-Plug 'HerringtonDarkholme/yats.vim'
 Plug 'bentayloruk/vim-react-es6-snippets'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'pangloss/vim-javascript'
@@ -56,6 +54,7 @@ Plug 'jparise/vim-graphql'
 Plug 'scrooloose/nerdcommenter'
 Plug 'sbdchd/neoformat'
 Plug 'cristianoliveira/vim-react-html-snippets'
+Plug 'jparise/vim-graphql'
 
 "Css plugins
 Plug 'othree/csscomplete.vim'
@@ -63,20 +62,18 @@ Plug 'othree/csscomplete.vim'
 "Node plugins
 Plug 'moll/vim-node'
 
-"Themes mios
+"Some themes
 Plug 'fenetikm/falcon'
 Plug 'morhetz/gruvbox'
 Plug 'tomasr/molokai'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'bignimbus/pop-punk.vim'
 Plug 'mbbill/vim-seattle'
+Plug 'folke/tokyonight.nvim'
 
-"Prettier
-"Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-"let g:prettier#autoformat = 0
-"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
-"autocmd BufEnter *.{js,jsx,ts} :syntax sync fromstart
-"autocmd BufLeave *.{js,jsx,ts} :syntax sync clear
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+
 " Aesthetics - Main
 Plug 'dracula/vim', { 'commit': '147f389f4275cec4ef43ebc25e2011c57b45cc00' }
 Plug 'sickill/vim-monokai'
@@ -98,7 +95,6 @@ Plug 'chriskempson/tomorrow-theme', { 'rtp': 'vim' }
 Plug 'rhysd/vim-color-spring-night'
 
 " Functionalities
-
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
@@ -123,9 +119,6 @@ Plug 'honza/vim-snippets'
 Plug 'metakirby5/codi.vim'
 Plug 'dkarter/bullets.vim'
 
-
-
-
 "'' Git Support ''"
 Plug 'rhysd/git-messenger.vim'
 Plug 'ThePrimeagen/git-worktree.nvim'
@@ -138,18 +131,9 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-json'
   \ ]
-Plug 'jparise/vim-graphql'
 
-"'' Themes ''"
-Plug 'folke/tokyonight.nvim'
-
-" Plug 'mg979/vim-visual-multi', { 'branch': 'master' }
-Plug 'michal-h21/vim-zettel'
-
-
-"Autocomplete
-"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
-
+""" Multi cursors
+Plug 'mg979/vim-visual-multi', { 'branch': 'master' }
 
 call plug#end()
 "Prettier config
@@ -370,7 +354,7 @@ nnoremap <leader>m :Marks<CR>
 " Search and switch buffers
 nmap <leader>b :Buffers<cr>
 " Find files by name under the current directory
-nmap <leader>f :Files<cr>
+nmap <space>q :Files<cr>
 " Find files by name under the home directory
 nmap <leader>h :Files ~/<cr>
 " Search content in the current file
@@ -525,8 +509,8 @@ let g:UltiSnipsJumpBackwardTrigger="<C-x>"
 "let g:UltiSnipsListSnippets="<c-l>"
 
 " EasyAlign
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
+"xmap ga <Plug>(EasyAlign)
+"nmap ga <Plug>(EasyAlign)
 
 " indentLine
 let g:indentLine_char = '▏'
@@ -541,6 +525,7 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
+
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
@@ -568,14 +553,6 @@ autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 """ Custom Functions
-
-" Trim Whitespaces
-function! TrimWhitespace()
-    let l:save = winsaveview()
-    %s/\\\@<!\s\+$//e
-    call winrestview(l:save)
-endfunction
-
 " Dracula Mode (Dark)
 function! ColorDracula()
     let g:airline_theme=''
@@ -583,54 +560,22 @@ function! ColorDracula()
     IndentLinesEnable
 endfunction
 
-" Seoul256 Mode (Dark & Light)
-function! ColorSeoul256()
-    let g:airline_theme='silver'
-    color seoul256
-    IndentLinesDisable
-endfunction
-
-" Forgotten Mode (Light)
-function! ColorForgotten()
-    " Light airline themes: tomorrow, silver, alduin
-    " Light colors: forgotten-light, nemo-light
-    let g:airline_theme='tomorrow'
-    color forgotten-light
-    IndentLinesDisable
-endfunction
-
-" Zazen Mode (black & White)
-function! ColorZazen()
-    let g:airline_theme='badcat'
-    color zazen
-    IndentLinesEnable
-endfunction
-
-
 """ Custom Mappings
 
 let mapleader=","
 nmap <leader>q :NERDTreeToggle<CR>
 nmap \ <leader>q
-"nmap <leader>w :TagbarToggle<CR>
 nmap <leader>ee :Colors<CR>
 nmap <leader>ea :AirlineTheme 
-nmap <leader>e1 :call ColorDracula()<CR>
-nmap <leader>e2 :call ColorSeoul256()<CR>
-nmap <leader>e3 :call ColorForgotten()<CR>
-nmap <leader>e4 :call ColorZazen()<CR>
+"nmap <leader>e1 :call ColorDracula()<CR>
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
-nmap <leader>t :call TrimWhitespace()<CR>
-xmap <leader>a gaip*
-nmap <leader>a gaip*
 nmap <leader>vt <C-w>s<C-w>j:terminal<CR>
 nmap <leader>vs <C-w>v<C-w>l:terminal<CR>
-nmap <leader>d <Plug>(pydocstring)
 "nmap <leader>f :Files<CR>
 nmap <leader>go :Goyo<CR>
-nmap <leader>h :RainbowParentheses!!<CR>
-nmap <leader>j :set filetype=journal<CR>
-nmap <leader>k :ColorToggle<CR>
+"nmap <leader>h :RainbowParentheses!!<CR>
+"nmap <leader>j :set filetype=journal<CR>
+"nmap <leader>k :ColorToggle<CR>
 nmap <leader>l :Limelight!!<CR>
 xmap <leader>l :Limelight!!<CR>
 autocmd FileType python nmap <leader>x :0,$!~/.config/nvim/env/bin/python -m yapf<CR>
@@ -639,6 +584,8 @@ nmap <silent> <leader><leader> :noh<CR>
 "nmap <Tab> :bnext<CR>
 "nmap <S-Tab> :bprevious<CR>
 
+"Prettier
+nnoremap <space>f <cmd>Prettier<cr>
 
 "COC
 nmap <silent> gd <Plug>(coc-definition)
@@ -654,14 +601,14 @@ nnoremap <silent> K :call CocAction('doHover')<CR>
 
 "Telescope binding
 " Find files using Telescope command-line sugar.
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
+"nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " Using Lua functions
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+"nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+"nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+"nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+"nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
