@@ -1,5 +1,9 @@
 """ Vim-Plug
 call plug#begin()
+
+""" PYWAL
+Plug 'dylanaraps/wal.vim'
+
 "color pairs
 Plug 'luochen1990/rainbow'
 
@@ -25,7 +29,6 @@ Plug 'nvim-telescope/telescope.nvim'
 
 "Edit files
 Plug 'tpope/vim-eunuch'
-
 "PHP
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
@@ -70,6 +73,7 @@ Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'bignimbus/pop-punk.vim'
 Plug 'mbbill/vim-seattle'
 Plug 'folke/tokyonight.nvim'
+Plug 'dylanaraps/pywal'
 
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
@@ -144,7 +148,7 @@ let g:rainbow_active = 1
 
 "Lightline Config
 let g:lightline = {
-      \ 'colorscheme': 'ayu_dark',
+      \ 'colorscheme': 'wal',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -345,20 +349,20 @@ let g:fzf_action = {
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-map <C-f> :Files<CR>
+"map <C-f> :Files<CR>
 map <leader>b :Buffers<CR>
 nnoremap <leader>g :Rg<CR>
 nnoremap <leader>t :Tags<CR>
-nnoremap <leader>m :Marks<CR>
+nnoremap <space>m :Marks<CR>
 
 " Search and switch buffers
-nmap <leader>b :Buffers<cr>
+nmap <space>b :Buffers<cr>
 " Find files by name under the current directory
-nmap <space>q :Files<cr>
+nmap <space>f :Files<cr>
 " Find files by name under the home directory
 nmap <leader>h :Files ~/<cr>
 " Search content in the current file
-nmap <leader>l :BLines<cr>
+nmap <space>s :BLines<cr>
 " Search content in the current file and in files under the current directory
 nmap <leader>g :Ag<cr>
 
@@ -430,33 +434,33 @@ command! -bang -nargs=* GGrep
 
 """ Coloring
 syntax on
-color molokai
-colorscheme molokai
+color wal
+colorscheme wal
 
 "GRUVBOX THEME CONFIG
-"let g:gruvbox_contrast_light = "soft"
+"let g:gruvbox_contrast_light = "hard"
 "let g:gruvbox_bold = 1
 "let g:gruvbox_termcolors = 200
 "let g:gruvbox_hls_cursor = 'yellow'
-"set bg=light
+"set bg=dark
 
 "PUNK THEME
 " pop-punk ANSI colors for vim terminal
 "let g:terminal_ansi_colors = pop_punk#AnsiColors()
 
 " for the airline theme - note the underscore instead of the hyphen
-let g:airline_theme = 'alduin'
+let g:airline_theme = 'wal'
 
 " just for fun
 let g:airline_section_c = '😺%F'
 
 
 " Opaque Background (Comment out to use terminal's profile)
-set termguicolors
+"set termguicolors
 
 " Transparent Background (For i3 and compton)
-"highlight Normal guibg=NONE ctermbg=NONE
-"highlight LineNr guibg=NONE ctermbg=NONE
+highlight Normal guibg=NONE ctermbg=NONE
+highlight LineNr guibg=NONE ctermbg=NONE
 
 """ Other Configurations
 filetype plugin indent on
@@ -474,8 +478,10 @@ set title
 " NERDTree
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = '↠'
-let g:NERDTreeDirArrowCollapsible = '↡'
-autocmd VimEnter * NERDTree
+"let g:NERDTreeDirArrowCollapsible = '↡'
+"let g:NERDTreeDirArrowExpandable = '⬏'
+let g:NERDTreeDirArrowCollapsible = '⬎'
+"autocmd VimEnter * NERDTree
 
 " Airline
 "let g:airline_powerline_fonts = 1
@@ -571,6 +577,7 @@ nmap <leader>ea :AirlineTheme
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 nmap <leader>vt <C-w>s<C-w>j:terminal<CR>
 nmap <leader>vs <C-w>v<C-w>l:terminal<CR>
+nmap <space>q <C-w><C-w><CR>
 "nmap <leader>f :Files<CR>
 nmap <leader>go :Goyo<CR>
 "nmap <leader>h :RainbowParentheses!!<CR>
@@ -581,11 +588,11 @@ xmap <leader>l :Limelight!!<CR>
 autocmd FileType python nmap <leader>x :0,$!~/.config/nvim/env/bin/python -m yapf<CR>
 "nmap <leader>n :HackerNews best<CR>J
 nmap <silent> <leader><leader> :noh<CR>
-"nmap <Tab> :bnext<CR>
+nmap <space>w :bnext<CR>
 "nmap <S-Tab> :bprevious<CR>
 
 "Prettier
-nnoremap <space>f <cmd>Prettier<cr>
+nnoremap <space>p <cmd>Prettier<cr>
 
 "COC
 nmap <silent> gd <Plug>(coc-definition)
