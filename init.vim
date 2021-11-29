@@ -38,6 +38,7 @@ Plug 'ncm2/ncm2-path'
 "Web Plugins
 Plug 'mxw/vim-jsx'
 Plug 'bentayloruk/vim-react-es6-snippets'
+Plug 'epilande/vim-es2015-snippets'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'pangloss/vim-javascript'
 Plug 'elzr/vim-json'
@@ -74,6 +75,8 @@ Plug 'bignimbus/pop-punk.vim'
 Plug 'mbbill/vim-seattle'
 Plug 'folke/tokyonight.nvim'
 Plug 'dylanaraps/pywal'
+Plug 'ajmwagar/vim-deus'
+Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
 
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
@@ -108,7 +111,6 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/vim-easy-align'
-Plug 'alvan/vim-closetag'
 Plug 'tpope/vim-abolish'
 Plug 'Yggdroot/indentLine'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -182,6 +184,7 @@ let g:mta_use_matchparen_group = 1
 let g:mta_filetypes = {
     \ 'html' : 1,
     \ 'jsx' : 1,
+    \ 'tsx' : 1,
     \ 'xhtml' : 1,
     \ 'xml' : 1,
     \ 'jinja' : 1,
@@ -191,22 +194,22 @@ let g:mta_filetypes = {
 " filenames like *.xml, *.html, *.xhtml, ...
 " These are the file extensions where this plugin is enabled.
 "
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx,*.tsx'
 
 " filenames like *.xml, *.xhtml, ...
 " This will make the list of non-closing tags self-closing in the specified files.
 "
-let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.tsx'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx, *.tsx'
 
 " filetypes like xml, html, xhtml, ...
 " These are the file types where this plugin is enabled.
 "
-let g:closetag_filetypes = 'html,xhtml,phtml'
+let g:closetag_filetypes = 'html,xhtml,phtml, jsx, tsx'
 
 " filetypes like xml, xhtml, ...
 " This will make the list of non-closing tags self-closing in the specified files.
 "
-let g:closetag_xhtml_filetypes = 'xhtml,jsx,tsx'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx, tsx'
 
 " integer value [0|1]
 " This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
@@ -230,7 +233,6 @@ let g:closetag_shortcut = '>'
 " Add > at current position without closing the current tag, default is ''
 "
 let g:closetag_close_shortcut = '<leader>>'
-
 
 "PHP
 
@@ -434,12 +436,18 @@ command! -bang -nargs=* GGrep
 
 """ Coloring
 syntax on
-color wal
-colorscheme wal
+"color onehalfdark
+colorscheme onehalfdark
+
+"SEOUL256 THEME CONFIG
+"seoul256 (dark):
+"Range:   233 (darkest) ~ 239 (lightest)
+"Default: 237
+"let g:seoul256_background = 236
 
 "GRUVBOX THEME CONFIG
 "let g:gruvbox_contrast_light = "hard"
-"let g:gruvbox_bold = 1
+let g:gruvbox_bold = 1
 "let g:gruvbox_termcolors = 200
 "let g:gruvbox_hls_cursor = 'yellow'
 "set bg=dark
@@ -448,11 +456,15 @@ colorscheme wal
 " pop-punk ANSI colors for vim terminal
 "let g:terminal_ansi_colors = pop_punk#AnsiColors()
 
+"""BOLD FONT CONFIG
+set guifont=Cascadia-Code:h13
+
 " for the airline theme - note the underscore instead of the hyphen
 let g:airline_theme = 'wal'
 
 " just for fun
-let g:airline_section_c = '😺%F'
+let g:airline_section_c = '🌈😺💕%F'
+"let g:airline_section_c = '😺%F'
 
 
 " Opaque Background (Comment out to use terminal's profile)
@@ -484,7 +496,7 @@ let g:NERDTreeDirArrowCollapsible = '⬎'
 "autocmd VimEnter * NERDTree
 
 " Airline
-"let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 1
 let g:airline_section_z = ' %{strftime("%-I:%M %p")}'
 let g:airline_section_warning = ''
 let g:airline#extensions#tabline#enabled = 1
@@ -509,10 +521,6 @@ let g:SuperTabDefaultCompletionType = "<C-n>"
 let g:UltiSnipsExpandTrigger="<C-Space>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<C-x>"
-
-"let g:UltiSnipsExpandTrigger="<tab>"
-"list all snippets for current filetype
-"let g:UltiSnipsListSnippets="<c-l>"
 
 " EasyAlign
 "xmap ga <Plug>(EasyAlign)
@@ -577,6 +585,8 @@ nmap <leader>ea :AirlineTheme
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 nmap <leader>vt <C-w>s<C-w>j:terminal<CR>
 nmap <leader>vs <C-w>v<C-w>l:terminal<CR>
+
+""" Change between buffers
 nmap <space>q <C-w><C-w><CR>
 "nmap <leader>f :Files<CR>
 nmap <leader>go :Goyo<CR>
