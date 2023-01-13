@@ -1,4 +1,4 @@
-"" Vim-Plug
+""" Vim-Plug
 call plug#begin()
 
 """ PYWAL
@@ -18,6 +18,7 @@ Plug 'itchyny/lightline.vim'
 
 "python stuff
 Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 Plug 'davidhalter/jedi-vim'
 Plug 'neomake/neomake'
 
@@ -28,6 +29,11 @@ Plug 'nvim-telescope/telescope.nvim'
 
 "Edit files
 Plug 'tpope/vim-eunuch'
+"PHP
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
 
 "Web Plugins
 Plug 'mxw/vim-jsx'
@@ -230,7 +236,10 @@ let g:closetag_close_shortcut = '<leader>>'
 
 "PHP
 
+    " enable ncm2 for all buffers
+    autocmd BufEnter * call ncm2#enable_for_buffer()
 
+    " IMPORTANT: :help Ncm2PopupOpen for more information
     set completeopt=noinsert,menuone,noselect
         " suppress the annoying 'match x of y', 'The only match' and 'Pattern not
     " found' messages
@@ -349,15 +358,15 @@ nnoremap <leader>t :Tags<CR>
 nnoremap <space>m :Marks<CR>
 
 " Search and switch buffers
-nmap <space>b :Buffers <cr>
+nmap <space>b :Buffers<cr>
 " Find files by name under the current directory
-nmap <space>f :Files <cr>
+nmap <space>f :Files<cr>
 " Find files by name under the home directory
 nmap <leader>h :Files ~/<cr>
 " Search content in the current file
-nmap <space>s :BLines <cr>
+nmap <space>s :BLines<cr>
 " Search content in the current file and in files under the current directory
-nmap <leader>g :Ag <cr>
+nmap <leader>g :Ag<cr>
 
 nmap <leader>R :Files `=GetGitRoot()`<cr>
 
@@ -438,7 +447,7 @@ colorscheme onehalfdark
 
 "GRUVBOX THEME CONFIG
 "let g:gruvbox_contrast_light = "hard"
-"let g:gruvbox_bold = 1
+let g:gruvbox_bold = 1
 "let g:gruvbox_termcolors = 200
 "let g:gruvbox_hls_cursor = 'yellow'
 "set bg=dark
@@ -448,7 +457,7 @@ colorscheme onehalfdark
 "let g:terminal_ansi_colors = pop_punk#AnsiColors()
 
 """BOLD FONT CONFIG
-"set guifont=Cascadia-Code:h13
+set guifont=Cascadia-Code:h13
 
 " for the airline theme - note the underscore instead of the hyphen
 let g:airline_theme = 'wal'
@@ -505,7 +514,7 @@ autocmd BufLeave term://* stopinsert
 " vim-pydocstring
 let g:pydocstring_doq_path = '~/.config/nvim/env/bin/doq'
 
-" supertab
+" rupertab
 let g:SuperTabDefaultCompletionType = "<C-n>"
 
 " Ultisnips
@@ -613,3 +622,10 @@ nnoremap <silent> K :call CocAction('doHover')<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+" Using Lua functions
+"nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+"nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+"nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+"nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
