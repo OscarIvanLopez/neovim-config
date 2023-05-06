@@ -1,6 +1,9 @@
 "" Vim-Plug
 call plug#begin()
 
+""" youcompleteme
+"Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+
 """ PYWAL
 Plug 'dylanaraps/wal.vim'
 
@@ -10,11 +13,12 @@ Plug 'luochen1990/rainbow'
 "Auto pairs
 Plug 'jiangmiao/auto-pairs'
 
-"lightline
-Plug 'itchyny/lightline.vim'
+"Airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-"Robot framework
-"Plug 'mfukar/robotframework-vim'
+"lightline
+"Plug 'itchyny/lightline.vim'
 
 "python stuff
 Plug 'deoplete-plugins/deoplete-jedi'
@@ -46,7 +50,6 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'Valloric/MatchTagAlways'
 Plug 'alvan/vim-closetag'
-"Plug 'valloric/youcompleteme'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
 Plug 'scrooloose/nerdcommenter'
@@ -71,26 +74,22 @@ Plug 'folke/tokyonight.nvim'
 Plug 'dylanaraps/pywal'
 Plug 'ajmwagar/vim-deus'
 Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
-
-autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
-autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+Plug 'sainnhe/everforest'
+Plug 'folke/tokyonight.nvim'
+Plug 'alessandroyorba/despacio'
 
 " Aesthetics - Main
 Plug 'dracula/vim', { 'commit': '147f389f4275cec4ef43ebc25e2011c57b45cc00' }
 Plug 'sickill/vim-monokai'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/vim-journal'
 Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'nightsense/forgotten'
 Plug 'zaki/zazen'
 
 " Aethetics - Additional
-Plug 'nightsense/nemo'
 Plug 'yuttie/hydrangea-vim'
 Plug 'chriskempson/tomorrow-theme', { 'rtp': 'vim' }
 Plug 'rhysd/vim-color-spring-night'
@@ -102,8 +101,7 @@ Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
-Plug 'ervandew/supertab'
-Plug 'jiangmiao/auto-pairs'
+"Plug 'ervandew/supertab'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-abolish'
 Plug 'Yggdroot/indentLine'
@@ -125,7 +123,6 @@ Plug 'ThePrimeagen/git-worktree.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 
 "'' Language Support ''"
-"Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
   \ 'coc-tsserver',
@@ -135,42 +132,65 @@ let g:coc_global_extensions = [
 """ Multi cursors
 Plug 'mg979/vim-visual-multi', { 'branch': 'master' }
 
+" DJANGO
+Plug 'yaegassy/coc-htmldjango', {'do': 'yarn install --frozen-lockfile'}
+
+""" python formatter
+Plug 'vim-autoformat/vim-autoformat'
+
+""" nvim-cmp plugins
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+
+" For vsnip users.
+"Plug 'hrsh7th/cmp-vsnip'
+"Plug 'hrsh7th/vim-vsnip'
+
+" For luasnip users.
+" Plug 'L3MON4D3/LuaSnip'
+" Plug 'saadparwaiz1/cmp_luasnip'
+
+" For ultisnips users.
+Plug 'SirVer/ultisnips'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+
+" For snippy users.
+" Plug 'dcampos/nvim-snippy'
+" Plug 'dcampos/cmp-snippy'
+
+""" CTAGS
+Plug 'ludovicchabant/vim-gutentags'
+
 call plug#end()
+
+""" Select With Enter """
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+
+""" CURSOR
+hi Cursor guifg=green guibg=green
+
+"""youcompleteme config
+let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
+let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
+let g:ycm_seed_identifiers_with_syntax = 1 " Completion for programming language's keyword
+let g:ycm_complete_in_comments = 1 " Completion in comments
+let g:ycm_complete_in_strings = 1 " Completion in string
+
 "Prettier config
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 "Color pairs config
 let g:rainbow_active = 1
 
-"Lightline Config
-let g:lightline = {
-      \ 'colorscheme': 'wal',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead'
-      \ },
-      \ }
-
 "Relative numbers
 set relativenumber
-
-"Robot framework config
-"let g:robot_syntax_for_txt = 1
-
-"python stuff
-let g:deoplete#enable_at_startup = 1
-
-"let g:neomake_python_enabled_makers = ['pylint']
-call neomake#configure#automake('nrwi', 500)
-
-"Personal Config
-"
-"React - JSX
-let g:jsx_ext_required = 1
-let g:jsx_pragma_required = 1
 
 "Tags
 let g:mta_use_matchparen_group = 1
@@ -228,106 +248,11 @@ let g:closetag_shortcut = '>'
 "
 let g:closetag_close_shortcut = '<leader>>'
 
-"PHP
-
-
-    set completeopt=noinsert,menuone,noselect
-        " suppress the annoying 'match x of y', 'The only match' and 'Pattern not
-    " found' messages
-    set shortmess+=c
-
-    " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-    inoremap <c-c> <ESC>
-
-    " When the <Enter> key is pressed while the popup menu is visible, it only
-    " hides the menu. Use this mapping to close the menu and also start a new
-    " line.
-    inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-
-    " Use <TAB> to select the popup menu:
-    inoremap <expr> <Tab> pumvisible() ? "\<C-m>" : "\<Tab>"
-
-    "autocompletion
-    autocmd FileType xml,html inoremap </ </<C-x><C-o>
-
-    " wrap existing omnifunc
-    " Note that omnifunc does not run in background and may probably block the
-    " editor. If you don't want to be blocked by omnifunc too often, you could
-    " add 180ms delay before the omni wrapper:
-    "  'on_complete': ['ncm2#on_complete#delay', 180,
-    "               \ 'ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
-    au User Ncm2Plugin call ncm2#register_source({
-            \ 'name' : 'css',
-            \ 'priority': 9,
-            \ 'subscope_enable': 1,
-            \ 'scope': ['css','scss'],
-            \ 'mark': 'css',
-            \ 'word_pattern': '[\w\-]+',
-            \ 'complete_pattern': ':\s*',
-            \ 'on_complete': ['ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
-            \ })
-
-
-" filenames like *.xml, *.html, *.xhtml, ...
-" These are the file extensions where this plugin is enabled.
-"
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
-
-" filenames like *.xml, *.xhtml, ...
-" This will make the list of non-closing tags self-closing in the specified files.
-"
-let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
-
-" filetypes like xml, html, xhtml, ...
-" These are the file types where this plugin is enabled.
-"
-let g:closetag_filetypes = 'html,xhtml,phtml'
-
-" filetypes like xml, xhtml, ...
-" This will make the list of non-closing tags self-closing in the specified files.
-"
-let g:closetag_xhtml_filetypes = 'xhtml,jsx'
-
-" integer value [0|1]
-" This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
-"
-let g:closetag_emptyTags_caseSensitive = 1
-
-" dict
-" Disables auto-close if not in a "valid" region (based on filetype)
-"
-let g:closetag_regions = {
-    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
-    \ 'javascript.jsx': 'jsxRegion',
-    \ 'typescriptreact': 'jsxRegion,tsxRegion',
-    \ 'javascriptreact': 'jsxRegion',
-    \ }
-
-" Shortcut for closing tags, default is '>'
-"
-let g:closetag_shortcut = '>'
-
-" Add > at current position without closing the current tag, default is ''
-"
-let g:closetag_close_shortcut = '<leader>>'
-
-
-
-
 "JavaScript" 
 let g:used_javascript_libs = 'underscore,backbone'
 
 "css
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
-
-
-" Start autocompletion after 4 chars
-let g:ycm_min_num_of_chars_for_completion = 1
-let g:ycm_min_num_identifier_candidate_chars = 1
-let g:ycm_enable_diagnostic_highlighting = 1
-" Don't show YCM's preview window [ I find it really annoying ]
-set completeopt-=preview
-let g:ycm_add_preview_to_completeopt = 0
+"autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
 
 "FZF config
 " This is the default extra key bindings
@@ -342,64 +267,12 @@ let g:fzf_action = {
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-"map <C-f> :Files<CR>
-map <leader>b :Buffers<CR>
-nnoremap <leader>g :Rg<CR>
-nnoremap <leader>t :Tags<CR>
-nnoremap <space>m :Marks<CR>
-
-" Search and switch buffers
-nmap <space>b :Buffers <cr>
-" Find files by name under the current directory
-nmap <space>f :Files <cr>
-" Find files by name under the home directory
-nmap <leader>h :Files ~/<cr>
-" Search content in the current file
-nmap <space>s :BLines <cr>
-" Search content in the current file and in files under the current directory
-nmap <leader>g :Ag <cr>
-
-nmap <leader>R :Files `=GetGitRoot()`<cr>
-
-function! GetGitRoot()
-  " Get the dir of the current file
-  let currentDir = expand("%:p:h")
-  " We stop when we find the .git/ dir or hit root
-  while !isdirectory(currentDir . "/.git/") && currentDir !=# "/"
-    " Make the parent the current dir
-    let currentDir = fnamemodify(currentDir, ':h')
-  endwhile
-  return currentDir
-endfunction
-
-
-" Border color
-"let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
-
 let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
 "let $FZF_DEFAULT_COMMAND="rg --files --hidden"
-
-
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-
+"
 "Get Files
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
-
 
 " Get text in files with Rg
 command! -bang -nargs=* Rg
@@ -427,8 +300,10 @@ command! -bang -nargs=* GGrep
 
 """ Coloring
 syntax on
-"color onehalfdark
-colorscheme onehalfdark
+colorscheme wal
+
+""" DESPACIO THEME CONFIG
+let g:despacio_Sunset = 1
 
 "SEOUL256 THEME CONFIG
 "seoul256 (dark):
@@ -446,24 +321,10 @@ colorscheme onehalfdark
 "PUNK THEME
 " pop-punk ANSI colors for vim terminal
 "let g:terminal_ansi_colors = pop_punk#AnsiColors()
-
-"""BOLD FONT CONFIG
-"set guifont=Cascadia-Code:h13
-
-" for the airline theme - note the underscore instead of the hyphen
-let g:airline_theme = 'wal'
-
-" just for fun
-let g:airline_section_c = '🌈😺💕%F'
-"let g:airline_section_c = '😺%F'
-
-
-" Opaque Background (Comment out to use terminal's profile)
-"set termguicolors
-
+"
 " Transparent Background (For i3 and compton)
-highlight Normal guibg=NONE ctermbg=NONE
-highlight LineNr guibg=NONE ctermbg=NONE
+"highlight Normal guibg=NONE ctermbg=NONE
+"highlight LineNr guibg=NONE ctermbg=NONE
 
 """ Other Configurations
 filetype plugin indent on
@@ -481,41 +342,31 @@ set title
 " NERDTree
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = '↠'
-"let g:NERDTreeDirArrowCollapsible = '↡'
-"let g:NERDTreeDirArrowExpandable = '⬏'
+let g:NERDTreeDirArrowCollapsible = '↡'
+let g:NERDTreeDirArrowExpandable = '⬏'
 let g:NERDTreeDirArrowCollapsible = '⬎'
 "autocmd VimEnter * NERDTree
 
 " Airline
+" for the airline theme - note the underscore instead of the hyphen
+let g:airline_theme = 'wal'
+
+" just for fun
+"let g:airline_section_c = '🌈😺💕%F'
+let g:airline_section_c = '😺%F'
+
 let g:airline_powerline_fonts = 1
 let g:airline_section_z = ' %{strftime("%-I:%M %p")}'
 let g:airline_section_warning = ''
 let g:airline#extensions#tabline#enabled = 1
 
-" Neovim :Terminal
-tmap <Esc> <C-\><C-n>
-tmap <C-w> <Esc><C-w>
-"tmap <C-d> <Esc>:q<CR>
-autocmd BufWinEnter,WinEnter term://* startinsert
-autocmd BufLeave term://* stopinsert
-
-" Disable documentation window
-"set completeopt-=preview
-
-" vim-pydocstring
-let g:pydocstring_doq_path = '~/.config/nvim/env/bin/doq'
-
-" supertab
-let g:SuperTabDefaultCompletionType = "<C-n>"
+"supertab
+"let g:SuperTabDefaultCompletionType = "<C-n>"
 
 " Ultisnips
 let g:UltiSnipsExpandTrigger="<C-Space>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<C-x>"
-
-" EasyAlign
-"xmap ga <Plug>(EasyAlign)
-"nmap ga <Plug>(EasyAlign)
+let g:UltiSnipsJumpForwardTrigger="<C-j>"
+let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 
 " indentLine
 let g:indentLine_char = '▏'
@@ -531,23 +382,7 @@ let g:fzf_action = {
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
 
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'Type'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Character'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-
 """ Filetype-Specific Configurations
-
 " HTML, XML, Jinja
 autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2
@@ -557,40 +392,51 @@ autocmd FileType xml setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
-""" Custom Functions
-" Dracula Mode (Dark)
-function! ColorDracula()
-    let g:airline_theme=''
-    color dracula
-    IndentLinesEnable
-endfunction
-
 """ Custom Mappings
+
+" Neovim :Terminal
+tmap <Esc> <C-\><C-n>
+tmap <C-w> <Esc><C-w>
+autocmd BufWinEnter,WinEnter term://* startinsert
+autocmd BufLeave term://* stopinsert
+
+
+"map <C-f> :Files<CR>
+map <leader>b :Buffers<CR>
+nnoremap <leader>g :Rg<CR>
+nnoremap <leader>t :Tags<CR>
+nnoremap <space>m :Marks<CR>
+
+" Search and switch buffers
+nmap <space>b :Buffers <cr>
+" Find files by name under the current directory
+nmap <space>f :Files <cr>
+" Find files into the git branch
+nmap <space>g :GFiles <cr>
+" Find files by name under the home directory
+nmap <leader>h :Files ~/<cr>
+" Search content in the current file
+nmap <space>s :BLines <cr>
+" Search content in the current file and in files under the current directory
+nmap <leader>g :Ag <cr>
+
 
 let mapleader=","
 nmap <leader>q :NERDTreeToggle<CR>
 nmap \ <leader>q
 nmap <leader>ee :Colors<CR>
 nmap <leader>ea :AirlineTheme 
-"nmap <leader>e1 :call ColorDracula()<CR>
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 nmap <leader>vt <C-w>s<C-w>j:terminal<CR>
 nmap <leader>vs <C-w>v<C-w>l:terminal<CR>
 
-""" Change between buffers
-nmap <space>q <C-w><C-w><CR>
-"nmap <leader>f :Files<CR>
+""" goyo
 nmap <leader>go :Goyo<CR>
-"nmap <leader>h :RainbowParentheses!!<CR>
-"nmap <leader>j :set filetype=journal<CR>
-"nmap <leader>k :ColorToggle<CR>
 nmap <leader>l :Limelight!!<CR>
-xmap <leader>l :Limelight!!<CR>
 autocmd FileType python nmap <leader>x :0,$!~/.config/nvim/env/bin/python -m yapf<CR>
-"nmap <leader>n :HackerNews best<CR>J
 nmap <silent> <leader><leader> :noh<CR>
-nmap <space>w :bnext<CR>
-"nmap <S-Tab> :bprevious<CR>
+nmap <space>n :bnext<CR>
+nmap <space>N :blast<CR>
 
 "Prettier
 nnoremap <space>p <cmd>Prettier<cr>
@@ -607,9 +453,5 @@ nmap <leader>do <Plug>(coc-codeaction)
 nnoremap <silent> <space>d :<C-u>CocList diagnostics<cr>
 nnoremap <silent> K :call CocAction('doHover')<CR>
 
-"Telescope binding
-" Find files using Telescope command-line sugar.
-"nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+""" Python Formatter
+noremap <F3> :Autoformat<CR>
